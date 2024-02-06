@@ -39,8 +39,8 @@ class Encoder:
         This method returns the current position of the
         motor using the encoder
         """
-        print("Counter1 = ", en1.counter());
-        print("Counter2 = ", en2.counter());
+        print("Counter1 = ", self.en1.counter());
+        print("Counter2 = ", self.en2.counter());
         
     def zero(self):
         """!
@@ -53,12 +53,12 @@ class Encoder:
 # file is imported as a module by some other main program           
 if __name__ == "__main__":
     # set up timer 3
-    TIM4 = pyb.Timer(4, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
+    TIM3 = pyb.Timer(3, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
     # Define pin assignments for motor 1
     pinc6 = pyb.Pin(pyb.Pin.board.PC6)
     pinc7 = pyb.Pin(pyb.Pin.board.PC7)
     # Create first encoder object
-    Tom = Encoder(pinc6, pinc7, TIM4)
+    Tom = Encoder(pinc6, pinc7, TIM3)
     
     while True:
         time.sleep(1)
