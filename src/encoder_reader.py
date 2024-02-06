@@ -91,7 +91,7 @@ if __name__ == "__main__":
     pinb5 = pyb.Pin(pyb.Pin.board.PB5)
     # Create motor drivers
     moe = MotorDriver(pina10, pinb4, pinb5, TIM3)
-    
+    moe.set_duty_cycle (50)
     while True:
         time.sleep(0.01)
         Tom.read()
