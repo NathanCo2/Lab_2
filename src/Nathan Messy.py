@@ -33,6 +33,9 @@ class Encoder:
         self.timer = timer
         self.en1 = timer.channel(1, pyb.Timer.ENC_AB, pin=ch1pin) #sets up ch 1 for encoder counting mode on ch1pin
         self.en2 = timer.channel(2, pyb.Timer.ENC_AB, pin=ch2pin) #sets up ch 2 for encoder counting mode on ch2pin
+        self.timer.counter(0)
+        self.previous = self.timer.counter()
+        self.deltatot = 0
         
     def read(self):
         """!
@@ -40,6 +43,18 @@ class Encoder:
         motor using the encoder
         """
         print("Counter = ", self.timer.counter());
+        self.current = self.timer.counter()
+        self.delta = self.current - self.previous
+        self.AR = int((0xFFFF + 1)/2)
+        print("Delta = ", self.delta);
+        if self.delta > self.AR: # check underflow
+            self.delta -= self.AR # offset to correct underflow
+        elif self.delta < -self.AR: # check overflow
+            self.delta += self.AR # offset to correct overflow
+        self.deltatot += self.delta
+        print("Delta = ", self.delta);
+        print("Delta Total = ", self.deltatot);
+        self.previous = self.current
         
     def zero(self):
         """!
@@ -53,9 +68,9 @@ class Encoder:
 # file is imported as a module by some other main program           
 if __name__ == "__main__":
     # set up timer 4 for encoder 1
-    TIM4 = pyb.Timer(4, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
+    TIM4 = pyb.Timer(4, prescaler=1, period=0xFFFF) # Timer 3, no prescalar, frequency 100kHz
     # set up timer 3 for encoder 2
-    TIM3 = pyb.Timer(3, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
+    TIM3 = pyb.Timer(3, prescaler=1, period=0xFFFF) # Timer 3, no prescalar, frequency 100kHz
     # Define pin assignments for encoder 1
     pinb6 = pyb.Pin(pyb.Pin.board.PB6)
     pinb7 = pyb.Pin(pyb.Pin.board.PB7)
