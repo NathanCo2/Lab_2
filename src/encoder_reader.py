@@ -1,12 +1,10 @@
 """!
 @file encoder_reader.py
-Run real or simulated dynamic response tests and plot the results. This program
-demonstrates a way to make a simple GUI with a plot in it. It uses Tkinter, an
-old-fashioned and ugly but useful GUI library which is included in Python by
-default.
 
-This file is based loosely on an example found at
-https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_tk_sgskip.html
+This program demonstrates the development of a class called Encoder to measure
+the movement of a motor using an optical encoder. This code was tested an ran
+with the Motor Driver class developed in Lab 1 to examine if the code was running
+correctly. 
 
 @author Jessica Perez, Jacquelyn Banh, and Nathan Chapman
 @date   2024-02-06 Original program, based on example from above listed source
@@ -19,7 +17,7 @@ from motor_driver import MotorDriver
 
 class Encoder:
     """! 
-    This class implements a motor driver for an ME405 kit. 
+    This class implements a Encoder for an ME405 kit. 
     """
 
     def __init__ (self, ch1pin, ch2pin, timer):
