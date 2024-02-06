@@ -16,11 +16,13 @@ https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_tk_sgskip.htm
 import time
 import pyb
 from encoder_reader import Encoder
+from motor_driver import MotorDriver
 
     
 # This main code is run if this file is the main program but won't run if this
 # file is imported as a module by some other main program
 if __name__ == "__main__":
+    
     # set up timer 4 for encoder 1
     TIM4 = pyb.Timer(4, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
     # set up timer 3 for encoder 2
