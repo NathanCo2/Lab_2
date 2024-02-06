@@ -22,8 +22,8 @@ class Encoder:
 
     def __init__ (self, ch1pin, ch2pin, timer):
         """! 
-        Creates a motor driver by initializing GPIO
-        pins and turning off the motor for safety. 
+        Creates an encoder object that can be used to measure
+        the position of a motor
         @param ch1pin: Pin for reading encoder channel 1
         @param ch2pin: Pin for reading encoder channel 2
         @param timer: Timer object for reading encoder
