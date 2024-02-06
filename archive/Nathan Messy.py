@@ -42,7 +42,7 @@ class Encoder:
         This method returns the current position of the
         motor using the encoder
         """
-        print("Counter = ", self.timer.counter());
+        print("Counter = ", self.timer.counter()); 
         self.current = self.timer.counter()
         self.delta = self.current - self.previous
         self.AR = int((0xFFFF + 1)/2)
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     #Define pin assignments for encoder 2
     pinc6 = pyb.Pin(pyb.Pin.board.PC6)
     pinc7 = pyb.Pin(pyb.Pin.board.PC7)
-    # Create encoder objects
+    # Create first encoder object
     Tom = Encoder(pinb6, pinb7, TIM4)
     Jerry = Encoder(pinc6, pinc7, TIM3)
     

@@ -31,26 +31,46 @@ class Encoder:
         """
         print ("Creating an encoder reader")
         self.timer = timer
-        self.enc1 = pyb.Timer(2, prescaler=1, period=100000)
-        enc_channel = enc_timer.channel(1, pyb.Timer.ENC_AB)
-        self.ch1 = timer.channel(1, pyb.Timer.PWM, pin=ch1pin) #sets up ch 1 for PWM mode on ch1pin
-        self.ch2 = timer.channel(2, pyb.Timer.PWM, pin=ch2pin) #sets up ch 2 for PWM mode on ch2pin
+        self.en1 = timer.channel(1, pyb.Timer.ENC_AB, pin=ch1pin) #sets up ch 1 for encoder counting mode on ch1pin
+        self.en2 = timer.channel(2, pyb.Timer.ENC_AB, pin=ch2pin) #sets up ch 2 for encoder counting mode on ch2pin
         
     def read(self):
         """!
         This method returns the current position of the
         motor using the encoder
         """
-        print (f"Setting duty cycle to {level}")
-    
+        self.currenttime = timer.read()
+        self.delta = self.currenttime - self.previoustime
+        if self.delta > 32768:
+            self.delta = -
+        print("Counter = ", self.timer.counter());
+        self.previoustime = time.read()
+        
     def zero(self):
         """!
         This method sets the encoder count to zero at the
         current position of the motor
         """
-        print (f"Setting duty cycle to {level}")
+        self.timer.counter(0)
+        print ("Encoder count reset to zero")
 
 # This main code is run if this file is the main program but won't run if this
 # file is imported as a module by some other main program           
 if __name__ == "__main__":
-    # set up timer 3
+    # set up timer 4 for encoder 1
+    TIM4 = pyb.Timer(4, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
+    # set up timer 3 for encoder 2
+    TIM3 = pyb.Timer(3, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
+    # Define pin assignments for encoder 1
+    pinb6 = pyb.Pin(pyb.Pin.board.PB6)
+    pinb7 = pyb.Pin(pyb.Pin.board.PB7)
+    #Define pin assignments for encoder 2
+    pinc6 = pyb.Pin(pyb.Pin.board.PC6)
+    pinc7 = pyb.Pin(pyb.Pin.board.PC7)
+    # Create first encoder object
+    Tom = Encoder(pinb6, pinb7, TIM4)
+    Jerry = Encoder(pinc6, pinc7, TIM3)
+    
+    while True:
+        time.sleep(0.01)
+        Tom.read()
