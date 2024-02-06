@@ -29,12 +29,13 @@ pinb5 = pyb.Pin(pyb.Pin.board.PB5)
 # Create motor drivers
 moe = MotorDriver(pina10, pinb4, pinb5, TIM3)
 while True:
-    moe.set_duty_cycle (100)			#Forward at 50% duty cycle
-    time.sleep(2)						#Sleeps for 2 seconds
-    moe.set_duty_cycle (-50)			#Reverse at 50% duty cycle
-    time.sleep(2)						#Sleeps for 2 seconds
-    moe.set_duty_cycle (50)				#Reverse at 50% duty cycle
-    time.sleep(2)
-    moe.set_duty_cycle (0)				#Stops the duty cycle
-    time.sleep(2)						#Sleeps for 2 seconds
+    moe.set_duty_cycle (-50)#Reverse at 50% duty cycle
+    #read encoder 20times for 20 seconds
+    time.sleep(0.01)
     Tom.read()
+    #change to different duty cycle
+#     moe.set_duty_cycle (50)
+#     #read encoder 20 times for 20 sec
+#     time.sleep(0.5)
+#     Tom.read()
+
