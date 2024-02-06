@@ -96,10 +96,10 @@ while True:
     #read encoder 20times for 20 seconds
     time.sleep(0.01)
     Tom.read()
-    #change to different duty cycle
-#     moe.set_duty_cycle (50)
-#     #read encoder 20 times for 20 sec
-#     time.sleep(0.5)
-#     Tom.read()
+#change to different duty cycle
+#moe.set_duty_cycle (50)
+#read encoder 20 times for 20 sec
+#time.sleep(0.5)
+#Tom.read()
 
 
