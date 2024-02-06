@@ -33,13 +33,29 @@ class Encoder:
         self.timer = timer
         self.en1 = timer.channel(1, pyb.Timer.ENC_AB, pin=ch1pin) #sets up ch 1 for encoder counting mode on ch1pin
         self.en2 = timer.channel(2, pyb.Timer.ENC_AB, pin=ch2pin) #sets up ch 2 for encoder counting mode on ch2pin
+        self.timer.counter(0)
+        self.previous = self.timer.counter()
+        self.deltatot = 0
         
     def read(self):
         """!
         This method returns the current position of the
         motor using the encoder
         """
-        print("Counter = ", self.timer.counter());
+        print("Counter = ", self.timer.counter()); # reads the current timer value
+        #Accounts from overflow and underflow
+        self.current = self.timer.counter()# stores current time value
+        self.delta = self.current - self.previous # calculates the delta based on current time and previous time
+        self.AR = int((0xFFFF + 1)/2) # calculates half the auto reload value for 16 bit number
+        print("Delta = ", self.delta);# print the delta
+        if self.delta > self.AR: # check underflow (if delta is greater then auto reload value)
+            self.delta -= self.AR # offset to correct underflow (if so, then will offset by subtracting AR from delta)
+        elif self.delta < -self.AR: # check overflow (if delta is less then auto reload value)
+            self.delta += self.AR # offset to correct overflow (if so, then will offset by add AR from delta)
+        self.deltatot += self.delta# summing all delta from previous calculates (to determine position overtime)
+        print("Delta = ", self.delta);# prints the delta
+        print("Delta Total = ", self.deltatot);# prints total delta
+        self.previous = self.current # stores previous time into current for next read
         
     def zero(self):
         """!
@@ -53,9 +69,9 @@ class Encoder:
 # file is imported as a module by some other main program           
 if __name__ == "__main__":
     # set up timer 4 for encoder 1
-    TIM4 = pyb.Timer(4, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
+    TIM4 = pyb.Timer(4, prescaler=1, period=0xFFFF) # Timer 3, no prescalar, frequency 100kHz
     # set up timer 3 for encoder 2
-    TIM3 = pyb.Timer(3, prescaler=1, period=100000) # Timer 3, no prescalar, frequency 100kHz
+    TIM3 = pyb.Timer(3, prescaler=1, period=0xFFFF) # Timer 3, no prescalar, frequency 100kHz
     # Define pin assignments for encoder 1
     pinb6 = pyb.Pin(pyb.Pin.board.PB6)
     pinb7 = pyb.Pin(pyb.Pin.board.PB7)
@@ -69,3 +85,4 @@ if __name__ == "__main__":
     while True:
         time.sleep(0.01)
         Tom.read()
+
