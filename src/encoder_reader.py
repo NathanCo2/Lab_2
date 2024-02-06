@@ -39,8 +39,7 @@ class Encoder:
         This method returns the current position of the
         motor using the encoder
         """
-        print("Counter1 = ", self.en1.counter());
-        print("Counter2 = ", self.en2.counter());
+        print("Counter = ", self.timer.counter());
         
     def zero(self):
         """!
